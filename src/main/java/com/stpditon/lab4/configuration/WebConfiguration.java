@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
-@EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Value("${allowed.origins}")
@@ -24,9 +23,4 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/")
-    }
 }
