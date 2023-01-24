@@ -19,6 +19,7 @@ public class User implements Serializable, UserDetails {
     private String username;
     private String password;
     private boolean enabled = true;
+
     public User() {}
 
     public User(String username, String password) {

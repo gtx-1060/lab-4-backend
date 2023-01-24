@@ -24,6 +24,10 @@ public class Point implements Serializable {
     private float y;
     private float r;
 
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
     public Point() {}
 
     public Point(Coordinates dot, long workTime, boolean hit) {
@@ -67,6 +71,9 @@ public class Point implements Serializable {
     public long getId() {
         return id;
     }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @JsonIgnore
     public boolean isHit() {
@@ -91,6 +98,15 @@ public class Point implements Serializable {
 
     public long getWorkTime() {
         return workTime;
+    }
+
+    @JsonIgnore
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
