@@ -37,9 +37,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public User createUser(UserDto user) {
         String hash = passwordEncoder.encode(user.getPassword());
         User newUser = new User(user.getUsername(), hash);
-        Set<Role> role = rolesRepository.findRolesByName("USER");
-        newUser.setRoles(role);
-        return usersRepository.save(newUser);
+        return setRole("ROLE_USER", newUser);
+    }
+
+    public User setRole(String roleName, User user) {
+        Set<Role> role = rolesRepository.findRolesByName(roleName);
+        user.setRoles(role);
+        return usersRepository.save(user);
     }
 
 }

@@ -8,6 +8,7 @@ import com.stpdiron.lab4.services.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,10 @@ import java.util.List;
 @RequestMapping("api/users")
 @Slf4j
 public class UsersController {
+
+    @Value("${admin-secret}")
+    String adminSecret;
+
     private final UserDetailsServiceImpl userDetailsService;
     private final PointsService pointsService;
 
@@ -44,5 +49,13 @@ public class UsersController {
     @GetMapping
     public User getSelfProfile(@AuthenticationPrincipal User user) {
         return user;
+    }
+
+    @GetMapping("get-admin/{value}")
+    @ResponseStatus(HttpStatus.OK)
+    public void getAdmin(@AuthenticationPrincipal User user, @PathVariable(value = "value") String secret) {
+        if (secret.equals(adminSecret)) {
+            userDetailsService.setRole("ROLE_ADMIN", user);
+        }
     }
 }

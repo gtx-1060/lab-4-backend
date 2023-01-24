@@ -64,6 +64,10 @@ public class SecurityConfig {
     private AccessDeniedHandler deniedHandler() {
         return (request, response, accessDeniedException) -> {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType("text/plain;charset=UTF-8");
+            PrintWriter writer = response.getWriter();
+            writer.write("Недостаточно прав.");
+            writer.close();
         };
     }
 
