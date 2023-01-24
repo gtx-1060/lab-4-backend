@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -46,14 +48,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/points/**")
                 .authenticated()
+                .requestMatchers("/api/users/{username}/points")
+                .hasRole("ADMIN")
                 .requestMatchers("/auth/**")
                 .permitAll()
                 .anyRequest()
                 .permitAll()
                 .and()
                 .exceptionHandling()
+                .accessDeniedHandler(deniedHandler())
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
         return http.build();
+    }
+
+    private AccessDeniedHandler deniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        };
     }
 
     private AuthenticationFailureHandler failureHandler() {

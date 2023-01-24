@@ -4,15 +4,14 @@ import com.stpdiron.lab4.dtos.Coordinates;
 import com.stpdiron.lab4.entities.Point;
 import com.stpdiron.lab4.entities.User;
 import com.stpdiron.lab4.services.PointsService;
+import com.stpdiron.lab4.services.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
